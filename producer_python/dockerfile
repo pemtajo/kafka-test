@@ -1,0 +1,8 @@
+FROM python:alpine
+
+RUN pip3 install flask kafka-python
+
+WORKDIR /producer
+COPY . .
+
+CMD python3 -u producer.py
