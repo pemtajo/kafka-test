@@ -1,0 +1,8 @@
+{
+  "name": "consumer_nodejs",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "no-kafka": "^3.2.10"
+  }
+}
