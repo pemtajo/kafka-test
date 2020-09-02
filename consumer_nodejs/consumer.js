@@ -5,7 +5,7 @@ const Kafka = require('no-kafka');
 var valueSum = 0;
 var count = 1
 
-const consumer = new Kafka.SimpleConsumer({ "connectionString": "127.0.0.1:29092" })
+const consumer = new Kafka.SimpleConsumer({ "connectionString": process.env.SERVER_KAFKA })
 var data = function (messageSet, topic, partition) {
     messageSet.forEach(function (m) {
         var value = parseInt(m.message.value.toString('utf8'));

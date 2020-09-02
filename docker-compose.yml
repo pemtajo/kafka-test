@@ -2,7 +2,8 @@ version: "3.7"
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
-    network_mode: host
+    networks:
+      - kafka
     environment:
       ZOOKEEPER_CLIENT_PORT: 32181
       ZOOKEEPER_TICK_TIME: 2000
@@ -10,13 +11,14 @@ services:
       - "moby:127.0.0.1"
   kafka:
     image: confluentinc/cp-kafka:latest
-    network_mode: host
+    networks:
+      - kafka
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: localhost:32181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:32181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://zookeeper:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     extra_hosts:
       - "moby:127.0.0.1"
@@ -27,6 +29,13 @@ services:
       - kafka
     env_file:
       - consumer_nodejs/docker/.env
+  producer_python:
+    build: producer_python
+    container_name: dev-producer_python
+    networks:
+      - kafka
+    env_file:
+      - producer_python/docker/.env
 
 networks:
   kafka:
